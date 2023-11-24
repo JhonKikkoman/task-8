@@ -10,7 +10,7 @@ type imgT = {
 };
 
 const ProgressiveImg = ({ placeholderSrc, src, ...props }: imgT) => {
-  const [imgSrc, setImgSrc] = useState(placeholderSrc || src);
+  const [imgSrc, setImgSrc] = useState(placeholderSrc);
   const customClass =
     placeholderSrc && imgSrc === placeholderSrc ? 'loading' : 'loaded';
 
