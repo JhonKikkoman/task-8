@@ -1,43 +1,12 @@
 /** @format */
 
-import { useEffect, useState } from 'react';
+import { stateDetailsT } from '../App';
 
 type propT = {
-  propId: number;
+  propObj: stateDetailsT | null;
 };
 
-type stateT = {
-  id: number;
-  name: string;
-  avatar: string;
-  details: {
-    city: string;
-    company: string;
-    position: string;
-  };
-};
-
-export function Details({ propId }: propT) {
-  const [state, setState] = useState<stateT | null>(null);
-  console.log(state);
-
-  useEffect(() => {
-    try {
-      if (propId !== 0) {
-        const fch = async () => {
-          const response = await fetch(
-            `https://raw.githubusercontent.com/netology-code/ra16-homeworks/master/hooks-context/use-effect/data/${propId}.json`
-          );
-          const result = await response.json();
-          setState(result);
-        };
-        fch();
-      }
-    } catch (error) {
-      throw new Error(`Ошибка ответа ${error}`);
-    }
-  }, [propId]);
-
+export function Details({ propObj }: propT) {
   const preLoad = (
     <>
       <span className='preload'>Loading...</span>
@@ -45,17 +14,19 @@ export function Details({ propId }: propT) {
   );
   const element = (
     <>
-      <img src={state?.avatar} alt='' className='container_img' />
-      <span className='person_info person_name'>{state?.name}</span>
-      <span className='person_info'>{`City:${state?.details.city}`}</span>
-      <span className='person_info'>{`Company:${state?.details.company}`}</span>
-      <span className='person_info'>{`Position:${state?.details.position}`}</span>
+      <img src={propObj?.avatar} alt='' className='container_img' />
+      <span className='person_info person_name'>{propObj?.name}</span>
+      <span className='person_info'>{`City:${propObj?.details.city}`}</span>
+      <span className='person_info'>{`Company:${propObj?.details.company}`}</span>
+      <span className='person_info'>{`Position:${propObj?.details.position}`}</span>
     </>
   );
 
   return (
     <>
-      <div className='container_info'>{state === null ? preLoad : element}</div>
+      <div className='container_info'>
+        {propObj === null ? preLoad : element}
+      </div>
     </>
   );
 }

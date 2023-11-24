@@ -1,42 +1,18 @@
 /** @format */
 
-import { useEffect, useState } from 'react';
-
-type stateT = {
-  id: number;
-  name: string;
-};
+import { stateT } from '../App';
 
 type propT = {
   propClbk: (id: number) => void;
+  propInfo: stateT[] | null;
 };
 
-export function List({ propClbk }: propT) {
-  const [state, setState] = useState<stateT[] | null>(null);
-  useEffect(() => {
-    const fch = async () => {
-      try {
-        const response = await fetch(
-          'https://raw.githubusercontent.com/netology-code/ra16-homeworks/master/hooks-context/use-effect/data/users.json'
-        );
-        const result = await response.json();
-        setState(result);
-      } catch (error) {
-        throw new Error(`Ошибка запроса ${error}`);
-      }
-    };
-    fch();
-
-    return () => {
-      console.log('hello');
-    };
-  }, []);
-
+export function List({ propClbk, propInfo }: propT) {
   return (
     <>
       <div className='container_list'>
         <ul className='list_info'>
-          {state?.map((v) => {
+          {propInfo?.map((v) => {
             return (
               <li
                 key={v.id}
