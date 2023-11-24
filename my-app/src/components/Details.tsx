@@ -9,6 +9,7 @@ type propT = {
 };
 
 export function Details({ propObj }: propT) {
+  console.log(propObj?.avatar);
   const preLoad = (
     <>
       <span className='preload'></span>
