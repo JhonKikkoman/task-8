@@ -21,65 +21,51 @@ export type stateDetailsT = {
   };
 };
 
-// const dataFetch = async (url: string, id = null) => {
-//   let result;
-//   try {
-//     const response = await fetch(url);
-//     result = await response.json();
-//   } catch (error) {
-//     return new Error(`Ошибка ${error}`);
-//   }
-//   return result;
-// };
-
 function App() {
-  const [stateList, setStateList] = useState<stateT[] | null>(null);
-  const [stateDetails, setStateDetails] = useState<stateDetailsT | null>(null);
-  const [stateId, setStateId] = useState(0);
+  const [stateList, setStateList] = useState<stateT[]>([]);
+  const [stateDetails, setStateDetails] = useState<stateDetailsT>({
+    id: 0,
+    name: '',
+    avatar: '',
+    details: {
+      city: '',
+      company: '',
+      position: '',
+    },
+  });
+
   useEffect(() => {
     const fch = async () => {
-      try {
-        const response = await fetch(
-          'https://raw.githubusercontent.com/netology-code/ra16-homeworks/master/hooks-context/use-effect/data/users.json'
-        );
-        const result = await response.json();
-        setStateList(result);
-      } catch (error) {
-        throw new Error(`Ошибка запроса ${error}`);
+      const response = await fetch(
+        'https://raw.githubusercontent.com/netology-code/ra16-homeworks/master/hooks-context/use-effect/data/users.json'
+      );
+      if (!response.ok) {
+        throw new Error(`Ошибка запроса ${response.statusText}`);
       }
+      const result = await response.json();
+      setStateList(result);
     };
     fch();
-
-    return () => {
-      console.log('hello');
-    };
   }, []);
 
-  useEffect(() => {
-    try {
-      const fch = async () => {
-        if (stateId !== 0) {
-          const response = await fetch(
-            `https://raw.githubusercontent.com/netology-code/ra16-homeworks/master/hooks-context/use-effect/data/${stateId}.json`
-          );
-          const result = await response.json();
-          setStateDetails(result);
-        }
-      };
-      fch();
-    } catch (error) {
-      throw new Error(`Ошибка ответа ${error}`);
-    }
-  }, [stateId]);
-
   const listHanlderClick = (id: number) => {
-    setStateId(id);
+    const fch2 = async () => {
+      const response = await fetch(
+        `https://raw.githubusercontent.com/netology-code/ra16-homeworks/master/hooks-context/use-effect/data/${id}.json`
+      );
+      if (!response.ok) {
+        throw new Error(`Ошибка ответа ${response.statusText}`);
+      }
+      const result = await response.json();
+      setStateDetails(result);
+    };
+    fch2();
   };
   return (
     <>
       <div className='container'>
         <List propClbk={listHanlderClick} propInfo={stateList} />
-        <Details propObj={stateDetails} />
+        {stateDetails.id === 0 ? null : <Details propObj={stateDetails} />}
       </div>
     </>
   );

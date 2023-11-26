@@ -1,3 +1,4 @@
 /** @format */
 
-export const img = 'https://via.placeholder.com/300x300/258DC8/E0F6FD';
+export const imgPlaceHolder =
+  'https://dummyimage.com/300x300/ffffff/000000.jpg&text=Loading...';
