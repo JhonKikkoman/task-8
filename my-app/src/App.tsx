@@ -22,6 +22,7 @@ export type stateDetailsT = {
 };
 
 function App() {
+  const [state, setState] = useState(false);
   const [stateList, setStateList] = useState<stateT[]>([]);
   const [stateDetails, setStateDetails] = useState<stateDetailsT>({
     id: 0,
@@ -33,7 +34,6 @@ function App() {
       position: '',
     },
   });
-
   useEffect(() => {
     const fch = async () => {
       const response = await fetch(
@@ -53,11 +53,15 @@ function App() {
       const response = await fetch(
         `https://raw.githubusercontent.com/netology-code/ra16-homeworks/master/hooks-context/use-effect/data/${id}.json`
       );
+      if (response.ok) {
+        setState(true);
+      }
       if (!response.ok) {
         throw new Error(`Ошибка ответа ${response.statusText}`);
       }
       const result = await response.json();
       setStateDetails(result);
+      setState(false);
     };
     fch2();
   };
@@ -65,7 +69,9 @@ function App() {
     <>
       <div className='container'>
         <List propClbk={listHanlderClick} propInfo={stateList} />
-        {stateDetails.id === 0 ? null : <Details propObj={stateDetails} />}
+        {stateDetails.id === 0 ? null : (
+          <Details propObj={stateDetails} propBoo={state} />
+        )}
       </div>
     </>
   );
