@@ -1,8 +1,8 @@
 /** @format */
 
 import { useEffect, useState } from 'react';
-import { stateDetailsT } from '../App';
 import { imgPlaceHolder } from './img/img';
+import { stateDetailsT } from './models/models';
 
 type propT = {
   propObj: stateDetailsT;
